@@ -97,10 +97,13 @@ export default function ImageClassifier({ imageModel }) {
   };
 
   useEffect(() => {
+    const videoElement = videoRef.current;
     return () => {
       stopCamera();
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
+      if (videoElement && videoElement.srcObject) {
+        const stream = videoElement.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach((track) => track.stop());
       }
     };
   }, []);

@@ -12,6 +12,7 @@ const roboto = Roboto({
 export const metadata = {
   title: "App Name",
   description: "App Description",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
