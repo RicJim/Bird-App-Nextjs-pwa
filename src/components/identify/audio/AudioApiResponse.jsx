@@ -1,35 +1,36 @@
 import { useState } from "react";
 
-export default function ApiResponse({ audiofile }) {
-  const [responseMessage, setResponseMessage] = useState("");
+export default function ApiResponse({ audiofile, setSegments }) {
+    const [responseMessage, setResponseMessage] = useState("");
 
     const handleUpload = async () => {
         if (!audiofile) {
             alert("Seleciona un archivo primero.");
             return;
-        } else {
-            const formData = new FormData();
-            formData.append("file", audiofile);
+        }
 
-            try {
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/mel_spectrogram`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
+        const formData = new FormData();
+        formData.append("file", audiofile);
 
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/mel_spectrogram`,
+                {
+                    method: "POST",
+                    body: formData,
                 }
+            );
 
-                const data = await response.json();
-                setResponseMessage(data.message || "Archivo procesado con exito");
-            } catch (error) {
-                console.error("Error al enviar el archivo:", error);
-                setResponseMessage("Hubo un error al procesar el archivo");
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
             }
+
+            const data = await response.json();
+            setResponseMessage(data.message || "Archivo procesado con exito");
+            setSegments(data.segments || null);
+        } catch (error) {
+            console.error("Error al enviar el archivo:", error);
+            setResponseMessage("Hubo un error al procesar el archivo");
         }
     };
 

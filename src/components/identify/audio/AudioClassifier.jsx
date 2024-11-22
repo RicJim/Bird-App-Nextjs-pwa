@@ -1,76 +1,52 @@
 import { useState } from "react";
-import FileUploader from "./AudioFileUploader";
-// import ApiResponse from "./AudioApiResponse";
 import * as tf from "@tensorflow/tfjs";
 
-export default function AudioClassifier({ yamnetModel }) {
-  const [audiofile, setAudioFile] = useState(null);
-  const [prediction, setPrediction] = useState(null);
+export default function AudioClassifier({ segments, audioModel }) {
+    const [predictedLabel, setPredictedLabel] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  const handleFileSelect = (file) => {
-    setAudioFile(file);
-  };
+    const handlePredict = async () => {
+        setLoading(true);
+        try {
+            const predictions = [];
 
-  const handlePredict = async () => {
-    if (!audiofile) {
-      alert("Por favor, selecciona un archivo de audio.");
-      return;
-    }
-    
-    try {
-      const audioBuffer = await audiofile.arrayBuffer();
-      const waveform = await processAudio(audioBuffer);
+            for (const segment of segments) {
+                let segmentTensor = tf.tensor(segment);
+                segmentTensor = tf.image.resizeBilinear(segmentTensor.expandDims(-1), [16000,13]);
+                segmentTensor = segmentTensor.expandDims(0);
+                const prediction = await audioModel.predict(segmentTensor).data();
+                predictions.push(prediction);
 
-      const [scores, embeddings, spectrogram] = yamnetModel.predict(waveform);
+                segmentTensor.dispose();
+            }
 
-      const topScoreIndex = scores.mean(0).argMax().arraySync();
-      const topScore = scores.arraySync()[topScoreIndex];
+            const avgPrediction = predictions
+                .reduce((sum, p) => sum.map((v, i) => v + p[i]), new Array(predictions[0].length).fill(0))
+                .map(v => v / predictions.length);
 
-      setPrediction({
-        topClass: topScoreIndex,
-        topScore: topScore,
-        embeddings: embeddings,
-        spectrogram: spectrogram
-      });
-      
-      scores.print();
-      embeddings.print();
-      spectrogram.print();
+            const predictedLabel = avgPrediction.indexOf(Math.max(...avgPrediction));
+            setPredictedLabel(predictedLabel);
+        } catch (error) {
+            console.error("Error en la predicción:", error);
+        }
+        setLoading(false);
+    };
 
-    } catch (error) {
-      console.error("Error en la predicción:", error);
-    }
-  };
+    return (
+        <div className="w-full max-w-lg mt-6">
+            {/* Botón para hace la predicción */}
+            <button
+                onClick={handlePredict}
+                className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700"
+            >
+                {loading ? 'Clasificando...' : 'Clasificar Sonido'}
+            </button>
 
-  const processAudio = async (audioBuffer) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const decodedAudio = await audioContext.decodeAudioData(audioBuffer);
-
-    const waveform = tf.tensor(decodedAudio.getChannelData(0));
-    return waveform;
-  };
-
-  return (
-    <div className="min-h-screen flex items-start justify-center bg-gray-50 m-3">
-      <div className="w-full max-w-3xl bg-white p-6 rounded-xl shadow-lg">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-blue-600">
-          Clasificador de Sonido
-        </h1>
-
-        {/* Carga de archivo de audio */}
-        <FileUploader onFileSelect={handleFileSelect} />
-
-        {/* Botón para hace la predicción */}
-        <button
-          onClick={handlePredict}
-          className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700"
-        >
-          Clasificar Sonido
-        </button>
-
-        {/* Botón para enviar el archivo */}
-        {/* <ApiResponse audiofile={audiofile} /> */}       
-      </div>
-    </div>
-  );
+            {predictedLabel !== null && (
+                <p className="text-center mt-4">
+                    <strong>Predicción:</strong> {predictedLabel}
+                </p>
+            )}
+        </div>
+    );
 }
