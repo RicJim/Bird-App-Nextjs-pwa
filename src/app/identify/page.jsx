@@ -33,8 +33,7 @@ export default function IdentifyPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center text-center
-            p-3 sm:p-10 m-5 rounded-xl shadow-lg
+        <div className="min-h-screen flex flex-col items-center text-center sm:p-10 shadow-lg
             bg-gray-50 bg-gradient-to-b from-white to-green-300">
             {selectedInput === null && (
                 <section>

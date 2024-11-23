@@ -1,0 +1,47 @@
+.corner {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border: 3px solid white;
+}
+
+.corner.top-left {
+  top: 25%;
+  left: 25%;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 15%;
+}
+
+.corner.top-right {
+  top: 25%;
+  right: 25%;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 15%;
+}
+
+.corner.bottom-left {
+  bottom: 25%;
+  left: 25%;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 15%;
+}
+
+.corner.bottom-right {
+  bottom: 25%;
+  right: 25%;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 15%;
+}
+
+@media (min-width: 481px) {
+  .corner {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    border: 5px solid white;
+  }
+}
