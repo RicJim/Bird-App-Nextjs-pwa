@@ -16,20 +16,24 @@ export default function FileUploader({ onFileSelect }) {
   };
 
   return (
-    <div className="mb-10">
-      <input
-        type="file"
-        accept="audio/*"
-        onChange={handleFileChange}
-        className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2 mb-4 focus:ring-2 focus:ring-blue-500"
-      />
-      {audioUrl && (
-        <audio
-          controls
-          src={audioUrl}
-          className="w-full rounded-lg mb-4"
-        ></audio>
-      )}
-    </div>
+    <div className="w-full max-w-xl py-2">
+        <input
+          type="file"
+          accept="audio/*"
+          onChange={handleFileChange}
+          className="block w-full text-xs text-green-800
+            border border-green-300 bg-green-50 rounded-lg p-2 sm:p-3 mb-4 
+            focus:ring-2 focus:ring-green-500 focus:outline-none transition-all"
+        />
+        {audioUrl && (
+          <div className="w-full bg-green-50">
+            <audio
+              controls
+              src={audioUrl}
+              className="w-full rounded-lg border border-gray-300 shadow-sm"
+            ></audio>
+          </div>
+        )}
+      </div>
   );
 }

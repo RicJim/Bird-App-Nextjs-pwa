@@ -13,12 +13,15 @@ export default function ImageFileUploader({ onFileSelect }) {
     };
   
     return (
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center px-4 sm:px-6 md:px-8">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="block w-full text-yellow-500 text-xs
+          border-2 border-yellow-300 bg-yellow-50 rounded-lg shadow-sm p-2 sm:p-3 mb-4
+          focus:ring-2 focus:ring-green-500 focus:outline-none focus:border-green-500 
+          transition-all duration-300 ease-in-out sm:w-auto"
         />
       </div>
     );

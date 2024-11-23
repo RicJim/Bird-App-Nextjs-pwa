@@ -11,8 +11,8 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: "App Name",
-  description: "App Description",
+  title: "BirdApp",
+  description: "BirdApp Description",
   manifest: "/manifest.json",
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
         <Navbar />
 
         <ModelProvider>{children}</ModelProvider>
-        
+
         <Footer />
       </body>
     </html>

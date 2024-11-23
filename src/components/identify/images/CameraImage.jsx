@@ -59,14 +59,16 @@ export default function CameraImage({ onFileSelect }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-200 rounded-3x1 m-2 px-10 py-5">
+    <div className="flex flex-col items-center justify-center m-4 p-6 
+      sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%]">
 
       {/* Hidden Canvas */}
       <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
 
       {capturedImage === null && (
-        <section>
-          <div className="relative w-full aspect-video overflow-hidden rounded-lg shadow-lg bg-black">
+        <section className="w-full flex flex-col items-center justify-center">
+          <div className="w-72 h-56 sm:w-96 sm:h-72 overflow-hidden 
+            rounded-xl shadow-2xl bg-black mb-3">
             <video
               ref={videoRef}
               autoPlay
@@ -78,25 +80,27 @@ export default function CameraImage({ onFileSelect }) {
           {/* Capture Button */}
           <button
             onClick={capturePhoto}
-            className="mt-6 bg-orange-500 text-white px-20 py-3 rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring focus:ring-orange-300"
+            className="mt-6 bg-orange-500 text-white px-16 py-3 
+            rounded-xl shadow-lg hover:bg-orange-600 focus:outline-none 
+            focus:ring focus:ring-orange-300 transform transition duration-300"
           >
             Tomar Foto
           </button>
         </section>
       )}
 
-      <div className="flex justify-center space-x-6">
         {capturedImage && (
-          <section>
+          <div className="flex justify-center">
             <button
               onClick={retakeImage}
-              className="py-2 px-10 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+              className="bg-red-600 text-white px-10 py-3
+              rounded-xl shadow-lg hover:bg-red-700 focus:outline-none
+              transition duration-300"
             >
               Tomar Otra Vez
             </button>
-          </section>
+          </div>
         )}
-      </div>
     </div>
   );
 }

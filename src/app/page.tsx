@@ -4,35 +4,52 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="">
-      <section className="bg-gray-500 text-white py-20">
+      <section className="bg-gray-700 text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4x1 font-bold mb-4">Bienvenido a App Name</h1>
-          <p className="text-lg mb-8">
-            Funcionamiento de la herramienta
-          </p>
-          <Link href="/about">
+          <h1 className="text-4x1 font-bold mb-4">Bienvenido a BirdApp</h1>
+          <p className="text-lg mb-8">Funcionamiento de la herramienta</p>
+          <Link
+            href="/about"
+            className="bg-yellow-400 text-green-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition-all"
+          >
             About
           </Link>
         </div>
       </section>
 
       <section className="container mx-auto px-4 py-12">
-        <h2 className="font-bold">Caracteristicas</h2>
-        <div className="bg-white p-6 rounded-lg shadow-md my-5">
-          <h3 className="text-xl font-bold mb-2">Identificar usando Images</h3>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md my-5">
-          <h3 className="text-xl font-bold mb-2">Identificar usando Sonido</h3>
+        <h2 className="text-2x1 font-bold text-green-800 text-center mb-8">Caracteristicas</h2>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Images</h3>
+            <p className="text-gray-700">
+              La herramienta permite identificar aves utilizando la camara de nuestro dispositivo...
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Sonido</h3>
+            <p className="text-gray-700">
+              También es posible la identificación aunque no podamos verlas.
+              Esto por medio de la grabación del canto de las aves...
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="bg-gray-200 py-16">
+      <section className="bg-green-100 py-16">
         <div className="container mx-auto px-4 text-center">
-          <Image src="/images/hero.png"
+          <Image
+            src="/images/hero.png"
             alt="Imagen de bienvenida"
             width={600}
             height={400}
-            className="rounded-lg shadow-lg mx-auto" />
+            className="rounded-lg shadow-lg mx-auto"
+          />
+          <p className="text-green-800 mt-4">
+            Descubre cómo esta herramienta amplia nuestro conocimiento de las aves...
+          </p>
         </div>
       </section>
     </main>

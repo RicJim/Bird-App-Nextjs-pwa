@@ -32,18 +32,24 @@ export default function ImageClassifier({ imageFile, imageModel }) {
     }
 
     return (
-        <div className="w-full max-w-lg mt-6">
+        <div className="w-full max-w-lg px-4 sm:px-6 md:px-8">
             {/* Botón para hace la predicción */}
             <button
                 onClick={handlePredict}
-                className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 
+                text-white p-3 rounded-lg shadow-md 
+                hover:bg-green-700 transition-all duration-300 ease-in-out 
+                focus:outline-none focus:ring-4 focus:ring-green-300"
             >
                 Clasificar Imagen
             </button>
             {predictedLabel !== null && (
-                <p className="text-center mt-4">
-                    <strong>Predicción:</strong> {predictedLabel}
-                </p>
+                <div className="w-full max-w-xl mt-5 bg-white p-3 rounded-lg shadow-lg">
+                    <p className="text-center mt-3 text-gray-800 text-sm sm:text-base
+                    bg-gray-50 border border-gray-300 p-2 rounded-lg shadow-sm">
+                        <strong className="text-blue-600">Predicción:</strong> {predictedLabel}
+                    </p>
+                </div>
             )}
         </div>
     );

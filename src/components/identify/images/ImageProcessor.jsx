@@ -13,25 +13,38 @@ export default function ImageProcessor({ imageModel }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 m-3">
-      <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
+    <div className="min-h-screen flex flex-col items-center md:px-12 lg:px-16 py-6">
+      <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 mb-5">
         Clasificador de Imágenes
       </h1>
-      <div className="flex justify-center space-x-6 mb-8">
+
+      <div className="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 mb-6">
+        {/* Botón de seleccionar imagen */}
         <button
-          className="py-2 px-8 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className={`py-3 px-10 bg-gradient-to-r from-blue-500 to-blue-600 
+              text-white rounded-lg shadow-lg transform 
+                hover:scale-105 transition-all duration-300 ease-in-out 
+                focus:ring-4 focus:ring-blue-300 ${activeComponent === "uploader" ? 'hidden' : 'block'}`}
           onClick={() => {
             setActiveComponent("uploader");
             setImageFile(null);
-          }}>
-          Selecionar Imagen
+          }}
+        >
+          Seleccionar Imagen
         </button>
+
+        {/* Botón de tomar fotografía */}
         <button
-          className="py-2 px-8 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className={`py-3 px-10 bg-gradient-to-r from-green-500 to-green-600 
+              text-white rounded-lg shadow-lg transform 
+                hover:scale-105 transition-all duration-300 ease-in-out 
+                focus:ring-4 focus:ring-green-300
+                ${activeComponent === "camera" ? 'hidden' : 'block'}`}
           onClick={() => {
             setActiveComponent("camera");
             setImageFile(null);
-          }}>
+          }}
+        >
           Tomar Fotografía
         </button>
       </div>
@@ -39,7 +52,8 @@ export default function ImageProcessor({ imageModel }) {
       {/* Mostrar imagen */}
       {imageFile && (
         <div className="flex justify-center mb-6">
-          <div className="relative w-96 h-96 overflow-hidden border-2 border-gray-300 rounded-lg">
+          <div className="relative w-72 h-56 sm:w-96 sm:h-72 overflow-hidden 
+            border-2 border-gray-300 rounded-lg shadow-lg">
             <Image
               src={imageFile}
               alt="Imagen"
@@ -51,7 +65,7 @@ export default function ImageProcessor({ imageModel }) {
       )}
 
       {/** Render Condicional */}
-      <div className="mt-8">
+      <div className="w-full mt-2 flex justify-center">
         {/* Cargar Imagen */}
         {activeComponent === "uploader" && (
           <ImageFileUploader onFileSelect={handleFileSelect} />
@@ -64,7 +78,9 @@ export default function ImageProcessor({ imageModel }) {
 
       {/** Clasificación de imagen */}
       {imageFile && (
-        <ImageClassifier imageFile={imageFile} imageModel={imageModel} />
+        <div className="w-full mt-2 flex justify-center">
+          <ImageClassifier imageFile={imageFile} imageModel={imageModel} />
+        </div>
       )}
     </div>
   );
