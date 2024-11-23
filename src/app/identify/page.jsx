@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import ImageProcessor from "@/components/gallery/image/ImageProcessor";
 import AudioProcessor from "@/components/identify/audio/AudioProcessor";
-import { CameraIcon, MusicNoteIcon } from "@heroicons/react/outline";
+import ImageProcessor from "@/components/identify/images/ImageProcessor";
+
 import { useModelContext } from "@/context/ModelContext";
+import { CameraIcon, MusicNoteIcon } from "@heroicons/react/outline";
 
 export default function IdentifyPage() {
     const { imageModel, audioModel } = useModelContext();
@@ -47,7 +48,6 @@ export default function IdentifyPage() {
             </div>
             {imageModel && imageClass && <ImageProcessor imageModel={imageModel} />}
             {audioModel && audioClass && <AudioProcessor audioModel={audioModel} />}
-            {/* audioClass && yamnetModel && <AudioClassifier yamnetModel={yamnetModel} /> */} 
         </div>
     );
 }
