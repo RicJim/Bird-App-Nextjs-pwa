@@ -27,8 +27,8 @@ export default function CameraImage({ onFileSelect }) {
         const [track] = stream.getVideoTracks();
 
         if (track.getCapabilities) {
-          const cap = track.getCapabilities();
-          if (cap.zoom) {
+          const capabilities = track.getCapabilities();
+          if (capabilities.zoom) {
             setZoomAvailable(true);
             setZoomRange({
               min: capabilities.zoom.min,
@@ -83,10 +83,10 @@ export default function CameraImage({ onFileSelect }) {
 
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-      const cropX = canvas.width * 0.2;
-      const cropY = canvas.height * 0.2;
-      const cropWidth = canvas.width * 0.6;
-      const cropHeight = canvas.height * 0.6;
+      const cropX = canvas.width * 0.1;
+      const cropY = canvas.height * 0.1;
+      const cropWidth = canvas.width * 0.8;
+      const cropHeight = canvas.height * 0.8;
 
       const croppedCanvas = document.createElement("canvas");
       const croppedContext = croppedCanvas.getContext("2d");
