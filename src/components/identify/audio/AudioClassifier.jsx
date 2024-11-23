@@ -3,12 +3,10 @@ import * as tf from "@tensorflow/tfjs";
 
 export default function AudioClassifier({ segments, audioModel }) {
     const [predictedLabel, setPredictedLabel] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     const handlePredict = async () => {
-        setLoading(true);
         try {
-            const predictions = [];
+            /*const predictions = [];
 
             for (const segment of segments) {
                 let segmentTensor = tf.tensor(segment);
@@ -18,7 +16,27 @@ export default function AudioClassifier({ segments, audioModel }) {
                 predictions.push(prediction);
 
                 segmentTensor.dispose();
-            }
+            }*
+
+            const tensors = segments.map(segment => {
+                let tensor = tf.tensor(segment);
+                tensor = tf.image.resizeBilinear(tensor.expandDims(-1), [16000, 13]);
+                return tensor.expandDims(0); // Agrega dimensión para batch
+            });
+
+            const batchedTensor = tf.concat(tensors, 0); // Une todos los tensores
+            const predictions = await audioModel.predict(batchedTensor).array(); // Predice todos de una vez
+            batchedTensor.dispose();*/
+
+            const predictions = segments.map(segment => {
+                return tf.tidy(() => {
+                    let tensor = tf.tensor(segment);
+                    tensor = tf.image.resizeBilinear(tensor.expandDims(-1), [16000, 13]);
+                    tensor = tensor.expandDims(0);
+                    const prediction = audioModel.predict(tensor);
+                    return prediction.dataSync();
+                });
+            });
 
             const avgPrediction = predictions
                 .reduce((sum, p) => sum.map((v, i) => v + p[i]), new Array(predictions[0].length).fill(0))
@@ -29,7 +47,6 @@ export default function AudioClassifier({ segments, audioModel }) {
         } catch (error) {
             console.error("Error en la predicción:", error);
         }
-        setLoading(false);
     };
 
     return (
@@ -39,7 +56,7 @@ export default function AudioClassifier({ segments, audioModel }) {
                 onClick={handlePredict}
                 className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700"
             >
-                {loading ? 'Clasificando...' : 'Clasificar Sonido'}
+                Clasificar Sonido
             </button>
 
             {predictedLabel !== null && (

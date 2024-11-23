@@ -8,8 +8,8 @@ export default function AudioProcessor({ audioModel }) {
     const [segments, setSegments] = useState(null);
 
     const handleFileSelect = (file) => {
-        setAudioFile(file); // Recibe el archivo desde AudioFileUploader
-        setSegments(null);  // Reinicia los segmentos cuando se carga un nuevo archivo
+        setAudioFile(file);
+        setSegments(null);
     };
 
     return (

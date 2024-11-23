@@ -1,15 +1,15 @@
 import * as tf from "@tensorflow/tfjs";
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function ImageClassifier({ imageModel }) {
-  const [image, setImage] = useState(null);
-  const [prediction, setPrediction] = useState(null);
-  const [isCamera, setIsCamera] = useState(false);
-  const videoRef = useRef(null);
-  const [capturedImage, setCapturedImage] = useState(null);
+  // const [image, setImage] = useState(null);
+  // const [prediction, setPrediction] = useState(null);
+  // const [isCamera, setIsCamera] = useState(false);
+  // const videoRef = useRef(null);
+  // const [capturedImage, setCapturedImage] = useState(null);
 
-  const handleImageChange = (event) => {
+  /*const handleImageChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
@@ -21,9 +21,9 @@ export default function ImageClassifier({ imageModel }) {
     if (file) {
       reader.readAsDataURL(file);
     }
-  };
+  };*/
 
-  const predictImage = async () => {
+  /*const predictImage = async () => {
     if (!imageModel || !image) return;
 
     const imgElement = document.createElement("img");
@@ -39,9 +39,9 @@ export default function ImageClassifier({ imageModel }) {
       const predictionResult = await imageModel.predict(tensorImg).data();
       setPrediction(predictionResult);
     };
-  };
+  };*/
 
-  const startCamera = async () => {
+  /*const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
@@ -58,9 +58,9 @@ export default function ImageClassifier({ imageModel }) {
       const tracks = stream.getTracks();
       tracks.forEach((track) => track.stop());
     }
-  };
+  };*/
 
-  const captureImage = () => {
+  /*const captureImage = () => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     const video = videoRef.current;
@@ -73,9 +73,9 @@ export default function ImageClassifier({ imageModel }) {
     setCapturedImage(imgData);
     setImage(imgData);
     stopCamera();
-  };
+  };*/
 
-  const retakeImage = () => {
+  /* const retakeImage = () => {
     setCapturedImage(null);
     setImage(null);
     setIsCamera(true);
@@ -94,9 +94,9 @@ export default function ImageClassifier({ imageModel }) {
       setIsCamera(false);
       stopCamera();
     }
-  };
+  };*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     const videoElement = videoRef.current;
     return () => {
       stopCamera();
@@ -106,11 +106,11 @@ export default function ImageClassifier({ imageModel }) {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, []);*/
 
   return (
     <div className="max-w-4xl mx-auto p-4 min-h-screen">
-      <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
+      {/*<h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
         Clasificador de Imágenes
       </h1>
       <div className="flex justify-center space-x-6 mb-8">
@@ -126,9 +126,9 @@ export default function ImageClassifier({ imageModel }) {
         >
           Usar Cámara
         </button>
-      </div>
+      </div>*/}
 
-      {isCamera && !capturedImage && (
+      {/*isCamera && !capturedImage && (
         <div className="mb-8">
           <div className="flex justify-center mb-6">
             <video
@@ -146,9 +146,9 @@ export default function ImageClassifier({ imageModel }) {
             </button>
           </div>
         </div>
-      )}
+      )*/}
 
-      {(capturedImage || image) && (
+      {/*(capturedImage || image) && (
         <div className="flex justify-center mb-6">
           <div className="relative w-96 h-96 overflow-hidden border-2 border-gray-300 rounded-lg">
             <Image
@@ -159,9 +159,9 @@ export default function ImageClassifier({ imageModel }) {
             />
           </div>
         </div>
-      )}
+      )*/}
 
-      {!isCamera && !capturedImage && (
+      {/*!isCamera && !capturedImage && (
         <div className="flex justify-center mb-6">
           <input
             type="file"
@@ -170,10 +170,10 @@ export default function ImageClassifier({ imageModel }) {
             className="py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-      )}
+      )*/}
 
       <div className="flex justify-center mb-6 space-x-6">
-        {capturedImage && (
+        {/*capturedImage && (
           <>
             <button
               onClick={retakeImage}
@@ -189,7 +189,7 @@ export default function ImageClassifier({ imageModel }) {
               Predecir
             </button>
           </>
-        )}
+        )*/}
         {!capturedImage && (
           <button
             onClick={predictImage}

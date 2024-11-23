@@ -1,43 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { LoadModel } from "@/components/identify/LoadModel";
-import ImageClassifier from "@/components/identify/ImageClassifier";
+import { useState } from "react";
+import ImageProcessor from "@/components/identify/image/ImageProcessor";
 import AudioProcessor from "@/components/identify/audio/AudioProcessor";
 import { CameraIcon, MusicNoteIcon } from "@heroicons/react/outline";
+import { useModelContext } from "@/context/ModelContext";
 
 export default function IdentifyPage() {
+    const { imageModel, audioModel } = useModelContext();
     // image
     const [imageClass, setImageClass] = useState(null);
-    const [imageModel, setImageModel] = useState(null);
-    const imageModelPath = "/models/image/model.json";
 
     // audio    
     const [audioClass, setAudioClass] = useState(null);
-    const [audioModel, setAudioModel] = useState(null);
-    const audioModelPath = "/models/sound/model.json";
-    /* const [yamnetModel, setYAMnetModel] = useState(null);
-    const yamnetModelUrl =
-        "https://www.kaggle.com/models/google/yamnet/TfJs/tfjs/1"; */
-
-    useEffect(() => {
-        const loadModels = async () => {
-            try {
-                const loadedImageModel = await LoadModel(imageModelPath);
-                setImageModel(loadedImageModel);
-
-                const loadedAudioModel = await LoadModel(audioModelPath);
-                setAudioModel(loadedAudioModel);
-
-                /* const loadedYamnetModel = await LoadTFHubModel(yamnetModelUrl);
-                setYAMnetModel(loadedYamnetModel); */
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        loadModels();
-    }, []);
 
     const handleInputType = (type) => {
         if (type === "image") {
@@ -70,7 +45,7 @@ export default function IdentifyPage() {
                     Clasificación por Sonido
                 </button>
             </div>
-            {imageModel && imageClass && <ImageClassifier imageModel={imageModel} />}
+            {imageModel && imageClass && <ImageProcessor imageModel={imageModel} />}
             {audioModel && audioClass && <AudioProcessor audioModel={audioModel} />}
             {/* audioClass && yamnetModel && <AudioClassifier yamnetModel={yamnetModel} /> */} 
         </div>

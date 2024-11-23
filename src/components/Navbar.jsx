@@ -14,12 +14,16 @@ export default function Navbar() {
   ];
 
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
   
   const renderNavLinks = () => (
     navLinks.map(({ href, label, icons }) => (
-      <Link key={href} href={href} prefetch={true} className="flex items-center p-1 hover:text-red-300 space-x-1">
+      <Link 
+        key={href} 
+        href={href} 
+        className="flex items-center p-1 hover:text-red-300 space-x-1"
+        onClick={handleClick}>
         {icons}<span>{label}</span>
       </Link>
     ))
