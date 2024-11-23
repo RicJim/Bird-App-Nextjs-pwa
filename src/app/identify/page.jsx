@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ImageProcessor from "@/components/identify/image/ImageProcessor";
+import ImageProcessor from "@/components/gallery/image/ImageProcessor";
 import AudioProcessor from "@/components/identify/audio/AudioProcessor";
 import { CameraIcon, MusicNoteIcon } from "@heroicons/react/outline";
 import { useModelContext } from "@/context/ModelContext";
