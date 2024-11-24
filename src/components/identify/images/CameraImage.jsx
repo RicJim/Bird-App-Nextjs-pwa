@@ -6,10 +6,6 @@ export default function CameraImage({ onFileSelect }) {
   const canvasRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
-  const [zoom, setZoom] = useState(1);
-  const [zoomAvailable, setZoomAvailable] = useState(false);
-  const [zoomRange, setZoomRange] = useState({ min: 1, max: 3 });
-
   const startCamera = async () => {
     if (videoRef.current?.srcObject) {
       return;
@@ -23,22 +19,6 @@ export default function CameraImage({ onFileSelect }) {
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-
-        const [track] = stream.getVideoTracks();
-
-        if (track.getCapabilities) {
-          const capabilities = track.getCapabilities();
-          if (capabilities.zoom) {
-            setZoomAvailable(true);
-            setZoomRange({
-              min: capabilities.zoom.min,
-              max: capabilities.zoom.max,
-            });
-            setZoom(capabilities.zoom.min);
-          } else {
-            setZoomAvailable(false);
-          }
-        }
       }
     } catch (error) {
       console.error("Error al acceder a la cámara: ", error);
@@ -49,18 +29,6 @@ export default function CameraImage({ onFileSelect }) {
     const tracks = videoRef.current.srcObject.getTracks();
     tracks.forEach((track) => track.stop());
     videoRef.current.srcObject = null;
-  };
-
-  const handleZoomChange = (e) => {
-    const newZoom = parseFloat(e.target.Value);
-    setZoom(newZoom);
-
-    const [track] = videoRef.current.srcObject.getVideoTracks();
-    const capabilities = track.getCapabilities();
-
-    if (capabilities.zoom) {
-      track.applyConstraints({ advanced: [{ zoom: newZoom }] });
-    }
   };
 
   useEffect(() => {
@@ -92,7 +60,17 @@ export default function CameraImage({ onFileSelect }) {
       const croppedContext = croppedCanvas.getContext("2d");
       croppedCanvas.width = cropWidth;
       croppedCanvas.height = cropHeight;
-      croppedContext.drawImage(canvas, cropX, cropY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+      croppedContext.drawImage(
+        canvas,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
+        0,
+        0,
+        cropWidth,
+        cropHeight
+      );
 
       const imgData = croppedCanvas.toDataURL("image/jpeg");
 
@@ -110,7 +88,7 @@ export default function CameraImage({ onFileSelect }) {
   };
 
   return (
-    <div className="relative flex flex-col items-center w-lvw h-lvh">
+    <div className="relative flex flex-col items-center w-lvw">
       {/* Hidden Canvas */}
       <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
 
@@ -121,7 +99,6 @@ export default function CameraImage({ onFileSelect }) {
             autoPlay
             muted
             className="w-full h-full object-cover"
-            style={{ transform: `scale(${zoom})` }}
           ></video>
 
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -132,17 +109,6 @@ export default function CameraImage({ onFileSelect }) {
           </div>
 
           <div className="absolute bottom-5 w-full flex justify-center items-center gap-[10px]">
-            {zoomAvailable && (
-              <input
-                type="range"
-                min={zoomRange.min}
-                max={zoomRange.max}
-                step="0.1"
-                value={zoom}
-                onChange={handleZoomChange}
-                className="w-1/2"
-              />
-            )}
             <button
               onClick={capturePhoto}
               className="bg-orange-500 text-white px-14 sm:px-16 h-12
