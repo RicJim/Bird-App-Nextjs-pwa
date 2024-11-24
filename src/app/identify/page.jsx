@@ -43,9 +43,8 @@ export default function IdentifyPage() {
                     <div className="flex flex-wrap justify-center items-center mb-8 gap-6">
                         <button
                             onClick={() => handleInputType("image")}
-                            className="flex items-center py-3 px-10 
-                            bg-gradient-to-r from-green-500 to-green-600 
-                            text-white rounded-lg shadow-md 
+                            className="flex items-center py-3 px-10 text-white rounded-lg shadow-md 
+                            bg-gradient-to-r from-green-500 to-green-600                             
                             hover:scale-105 transform transition-all duration-300 focus:outline-none"
                         >
                             <CameraIcon className="h-6 w-6 mr-3" />
@@ -54,8 +53,7 @@ export default function IdentifyPage() {
                         <button
                             onClick={() => handleInputType("sound")}
                             className="flex items-center py-3 px-10 
-                            bg-gradient-to-r from-green-500 to-green-600 
-                            text-white rounded-lg shadow-md 
+                            bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-md                            
                             hover:scale-105 transform transition-all duration-300 focus:outline-none"
                         >
                             <MusicNoteIcon className="h-6 w-6 mr-3" />
