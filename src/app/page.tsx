@@ -20,21 +20,24 @@ export default function Home() {
       <section className="container mx-auto px-4 py-12">
         <h2 className="text-2x1 font-bold text-green-800 text-center mb-8">Caracteristicas</h2>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Images</h3>
-            <p className="text-gray-700">
-              La herramienta permite identificar aves utilizando la camara de nuestro dispositivo...
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Sonido</h3>
-            <p className="text-gray-700">
-              También es posible la identificación aunque no podamos verlas.
-              Esto por medio de la grabación del canto de las aves...
-            </p>
-          </div>
+        <div className="grid gap-6 md:grid-cols-2">          
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <Link href="/identify/image-processor">
+                <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Images</h3>
+                <p className="text-gray-700">
+                  La herramienta permite identificar aves utilizando la camara de nuestro dispositivo...
+                </p>
+              </Link>
+            </div>          
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <Link href="/identify/audio-processor">
+                <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Sonido</h3>
+                <p className="text-gray-700">
+                  También es posible la identificación aunque no podamos verlas.
+                  Esto por medio de la grabación del canto de las aves...
+                </p>
+              </Link>
+            </div>
         </div>
       </section>
 
@@ -42,9 +45,10 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <Image
             src="/images/hero.png"
-            alt="Imagen de bienvenida"
+            alt="Hero"
             width={600}
             height={400}
+            priority
             className="rounded-lg shadow-lg mx-auto"
           />
           <p className="text-green-800 mt-4">

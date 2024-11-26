@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import * as tf from "@tensorflow/tfjs";
+import { useModelContext } from "@/context/ModelContext";
+import BirdPredictCard from "@/components/identify/BirdPredictCard";
 
-export default function AudioClassifier({ segments, audioModel }) {
+export default function AudioClassifier({ segments }) {
     const [predictedLabel, setPredictedLabel] = useState(null);
+    const { tf, audioModel } = useModelContext();
 
     const handlePredict = async () => {
         try {
@@ -33,12 +35,7 @@ export default function AudioClassifier({ segments, audioModel }) {
 
     return (
         <div className="w-full max-w-xl mx-auto bg-white p-3 rounded-lg shadow-lg">
-            {predictedLabel !== null && (
-                <p className="text-center mt-3 text-gray-800 text-sm sm:text-base
-                bg-gray-50 border border-gray-300 p-2 rounded-lg shadow-sm">
-                    <strong className="text-blue-600">Predicción:</strong> {predictedLabel}
-                </p>
-            )}
+            {predictedLabel !== null && <BirdPredictCard predictedLabel={ predictedLabel } />}
         </div>
     );
 }

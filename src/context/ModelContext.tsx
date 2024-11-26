@@ -5,6 +5,7 @@ import { LoadGraphModel } from "@/lib/loadModel";
 import * as tf from '@tensorflow/tfjs';
 
 interface ModelContextType {
+    tf: typeof tf;
     imageModel: tf.GraphModel | null;
     audioModel: tf.GraphModel | null;
 }
@@ -40,7 +41,7 @@ interface ModelProviderProps {
     }, []);
 
     return (
-        <ModelContext.Provider value={{ imageModel, audioModel }}>
+        <ModelContext.Provider value={{ tf, imageModel, audioModel }}>
             {children}
         </ModelContext.Provider>
     );

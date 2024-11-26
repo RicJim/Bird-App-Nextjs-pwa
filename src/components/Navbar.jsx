@@ -3,14 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { MenuIcon, XIcon, InformationCircleIcon, CameraIcon, CollectionIcon } from '@heroicons/react/solid';
+import { XMarkIcon, InformationCircleIcon, Bars3Icon, CameraIcon, RectangleStackIcon } from '@heroicons/react/24/solid';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { href: "/identify", label: "Identificar", icons: [<CameraIcon key="cam" className="w-5 h-5" />] },
-    { href: "/gallery", label: "Catalogo", icons: [<CollectionIcon key="coll" className="w-5 h-5" />] },
+    { href: "/gallery", label: "Catalogo", icons: [<RectangleStackIcon key="coll" className="w-5 h-5" />] },
     { href: "/about", label: "About", icons: [<InformationCircleIcon key="info" className="w-5 h-5" />] },
   ];
 
@@ -51,7 +51,7 @@ export default function Navbar() {
         {/* Toggle Button */}
         <button onClick={handleClick} className="text-white lg:hidden 
           hover:text-yellow-400 transition-colors">
-          {isOpen ? (<XIcon className="w-6 h-6" />) : (<MenuIcon className="w-6 h-6" />)}
+          {isOpen ? (<XMarkIcon className="w-6 h-6" />) : (<Bars3Icon className="w-6 h-6" />)}
         </button>
 
         {/* Menú de navegación para escritorio */}
