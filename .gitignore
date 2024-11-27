@@ -41,4 +41,8 @@ venv
 
 /Vercel-Fastapi
 
-/scripts
+
+#PWA
+
+/public/sw.js
+/public/workbox-*.js

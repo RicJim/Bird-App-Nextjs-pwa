@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Head from "next/head";
 import { Roboto } from "next/font/google";
 import { ModelProvider } from "@/context/ModelContext";
 
@@ -23,6 +24,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+      </Head>
       <body className={roboto.className}>
         <Navbar />
 

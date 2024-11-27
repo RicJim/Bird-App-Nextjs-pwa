@@ -59,6 +59,18 @@ const withPWA = require('next-pwa')({
         },
       },
     },
+    {
+      urlPattern: /^\/.*/, // Coincide con todas las rutas dinámicas
+      handler: 'NetworkFirst', // Intenta la red primero; si falla, usa la caché
+      options: {
+        cacheName: 'dynamic-pages',
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días
+        },
+        networkTimeoutSeconds: 10, // Espera 10 segundos antes de usar la caché
+      },
+    },
   ],
 });
 

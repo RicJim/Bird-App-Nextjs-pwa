@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { XMarkIcon, InformationCircleIcon, Bars3Icon, CameraIcon, RectangleStackIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon, InformationCircleIcon, Bars3Icon, CameraIcon, RectangleStackIcon } from "@heroicons/react/24/solid";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Navbar() {
         className="flex items-center p-2 space-x-2 text-white 
           hover:text-yellow-400 hover:bg-green-600 rounded-md transition-all duration-300"
         onClick={handleClick}>
-        {icons}<span className="text-sm font-medium">{label}</span>
+        {icons[0]}<span className="text-sm font-medium">{label}</span>
       </Link>
     ))
   );
