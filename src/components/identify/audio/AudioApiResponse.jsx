@@ -1,8 +1,4 @@
-import { useState } from "react";
-
 export default function ApiResponse({ audiofile, setSegments }) {
-  const [responseMessage, setResponseMessage] = useState("");
-
   const handleUpload = async () => {
     if (!audiofile) {
       alert("Seleciona un archivo primero.");
@@ -26,7 +22,6 @@ export default function ApiResponse({ audiofile, setSegments }) {
       }
 
       const data = await response.json();
-      setResponseMessage(data.message || "Archivo procesado con exito");
       setSegments(data.segments || null);
     } catch (error) {
       console.error("Error al enviar el archivo:", error);
@@ -44,11 +39,6 @@ export default function ApiResponse({ audiofile, setSegments }) {
         >
           Procesar y Clasificar...
         </button>
-
-        {/* Mensaje de respuesta 
-            {responseMessage && (
-                <p className="text-center font-semibold mt-4 text-green-700">{responseMessage}</p>
-            )}*/}
     </div>
   );
 }

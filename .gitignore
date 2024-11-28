@@ -40,9 +40,9 @@ __pycache__/
 venv
 
 /Vercel-Fastapi
-/scripts
+scripts/generate-version.js
 
-#PWA
+# pwa
 
-/public/sw.js
-/public/workbox-*.js
+public/sw.js
+public/workbox-*.js

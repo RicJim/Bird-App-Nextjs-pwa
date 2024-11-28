@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/identify", label: "Identificar", icons: [<CameraIcon key="cam" className="w-5 h-5" />] },
-    { href: "/gallery", label: "Catalogo", icons: [<RectangleStackIcon key="coll" className="w-5 h-5" />] },
+    { href: "/gallery", label: "Catálogo", icons: [<RectangleStackIcon key="coll" className="w-5 h-5" />] },
     { href: "/about", label: "About", icons: [<InformationCircleIcon key="info" className="w-5 h-5" />] },
   ];
 

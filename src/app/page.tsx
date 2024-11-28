@@ -3,56 +3,59 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="">
-      <section className="bg-gray-700 text-white py-20">
+    <main className="bg-gradient-to-b from-green-100 to-green-50">
+      <section className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4x1 font-bold mb-4">Bienvenido a BirdApp</h1>
-          <p className="text-lg mb-8">Funcionamiento de la herramienta</p>
+          <h1 className="text-5xl font-bold mb-6 text-yellow-400">Bienvenido a BirdApp</h1>
+          <p className="text-lg text-yellow-200 mb-8">¡Explora y aprende la importancia de las aves!</p>
           <Link
             href="/about"
-            className="bg-yellow-400 text-green-900 px-6 py-2 rounded-lg font-semibold hover:bg-yellow-500 transition-all"
+            className="bg-orange-500 text-white text-lg px-6 py-2 rounded-full font-semibold hover:bg-yellow-500 transition-all"
           >
-            About
+            Aprende más
           </Link>
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-2x1 font-bold text-green-800 text-center mb-8">Caracteristicas</h2>
+      <section className="container mx-auto px-4 py-12 w-11/12">
+        <h2 className="text-3xl font-bold text-green-600 text-center mb-8">
+          Caracteristicas
+        </h2>
 
-        <div className="grid gap-6 md:grid-cols-2">          
-            <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="grid gap-6 md:grid-cols-2 text-center">          
+            <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-green-300
+              hover:shadow-lg hover:scale-105 transition-all">
               <Link href="/identify/image-processor">
-                <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Images</h3>
-                <p className="text-gray-700">
-                  La herramienta permite identificar aves utilizando la camara de nuestro dispositivo...
+                <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-2">¡Identificación por Images!</h3>
+                <p className="text-gray-700 text-sm sm:text-sm lg:text-lg">
+                  Utiliza la cámara de tu dispositivo para identificar las aves de una manera sencilla.
                 </p>
               </Link>
-            </div>          
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg border-2 border-green-300
+              hover:shadow-lg hover:scale-105 transition-all">
               <Link href="/identify/audio-processor">
-                <h3 className="text-xl font-bold text-green-800 mb-2">Identificación por Sonido</h3>
-                <p className="text-gray-700">
-                  También es posible la identificación aunque no podamos verlas.
-                  Esto por medio de la grabación del canto de las aves...
+                <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-2">¡Identificación por Sonido!</h3>
+                <p className="text-gray-700 text-sm sm:text-md lg:text-lg">
+                  Si no las puedes ver, ¡escucha su canto y descubre que ave es!
                 </p>
               </Link>
             </div>
         </div>
       </section>
 
-      <section className="bg-green-100 py-16">
+      <section className="bg-gradient-to-r from-green-200 to-green-300 py-16">
         <div className="container mx-auto px-4 text-center">
           <Image
             src="/images/hero.png"
             alt="Hero"
             width={600}
             height={400}
-            priority
             className="rounded-lg shadow-lg mx-auto"
           />
-          <p className="text-green-800 mt-4">
-            Descubre cómo esta herramienta amplia nuestro conocimiento de las aves...
+          <p className="text-green-800 mt-4 text-lg">
+            ¡Descubre cómo esta herramienta amplia nuestro conocimiento de las aves!
           </p>
         </div>
       </section>

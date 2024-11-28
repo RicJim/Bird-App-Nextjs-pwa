@@ -18,7 +18,8 @@ export default function BirdPredictCard({ predictedLabel }) {
       <Image
         src={bird.Poster}
         alt={bird.Name}
-        layout="fill"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
         className="rounded-full shadow-md object-cover border-4 border-green-200"
       />
     </div>
