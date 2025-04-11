@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { register } from "@/services/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Register() {
   const [state, action, isPending] = useActionState(register, undefined);

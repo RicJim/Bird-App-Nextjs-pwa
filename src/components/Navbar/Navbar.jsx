@@ -56,7 +56,7 @@ export default function Navbar({ isLoggedIn }) {
     {
       href: "/",
       label: "Registros",
-      icons: [<DocumentIcon key="reg" className="w-5 h-5" />],
+      icons: [<DocumentIcon key="regis" className="w-5 h-5" />],
     },
     {
       label: "LogOut",
@@ -70,7 +70,7 @@ export default function Navbar({ isLoggedIn }) {
   };
 
   const renderLinks = (links) =>
-    links.map(({ href, label, icons, onClick }) =>
+    links.map(({ href, label, icons, onClick }, index) =>
       href ? (
         <Link
           key={href}
@@ -83,7 +83,11 @@ export default function Navbar({ isLoggedIn }) {
           <span className="text-sm font-medium">{label}</span>
         </Link>
       ) : (
-        <button onClick={onClick} className={"navbar-links w-full"}>
+        <button
+          key={`${label}-${index}`}
+          onClick={onClick}
+          className={"navbar-links w-full"}
+        >
           {icons[0]}
           <span className="text-sm font-medium">{label}</span>
         </button>

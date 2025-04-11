@@ -27,20 +27,22 @@ export default function CameraImage({ onFileSelect }) {
     }
   };
 
-  const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
+  const stopCamera = (videoElement) => {
+    if (videoElement?.srcObject) {
+      const tracks = videoElement.srcObject.getTracks();
       tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
+      videoElement.srcObject = null;
     }
   };
 
   useEffect(() => {
     startCamera();
 
+    const videoEl = videoRef.current;
+
     return () => {
-      if (videoRef.current?.srcObject) {
-        stopCamera();
+      if (videoEl?.srcObject) {
+        stopCamera(videoEl);
       }
     };
   }, []);
@@ -48,7 +50,7 @@ export default function CameraImage({ onFileSelect }) {
   const calculateDistance = (touch1, touch2) => {
     return Math.sqrt(
       Math.pow(touch2.pageX - touch1.pageX, 2) +
-      Math.pow(touch2.pageY - touch1.pageY, 2)
+        Math.pow(touch2.pageY - touch1.pageY, 2)
     );
   };
 
@@ -62,9 +64,12 @@ export default function CameraImage({ onFileSelect }) {
 
   const handleTouchMove = (e) => {
     if (e.touches.length === 2 && initialDistance) {
-      e.preventDefault(); 
+      e.preventDefault();
       const dist = calculateDistance(e.touches[0], e.touches[1]);
-      const newScale = Math.min(Math.max((dist / initialDistance) * scale, 1), 4);
+      const newScale = Math.min(
+        Math.max((dist / initialDistance) * scale, 1),
+        4
+      );
       setScale(newScale);
     }
   };
@@ -127,23 +132,24 @@ export default function CameraImage({ onFileSelect }) {
       setCapturedImage(imgData);
       onFileSelect(imgData);
 
-      stopCamera();
+      stopCamera(videoRef.current);
     }
   };
 
   const retakeImage = () => {
-    stopCamera();
+    stopCamera(videoRef.current);
     setCapturedImage(null);
     startCamera();
     onFileSelect(null);
   };
 
   return (
-    <div 
+    <div
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onWheel={handleWheel}
-      className="relative flex flex-col items-center w-full sm::w-lvw">
+      className="relative flex flex-col items-center w-full sm::w-lvw"
+    >
       {/* Hidden Canvas */}
       <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
 
