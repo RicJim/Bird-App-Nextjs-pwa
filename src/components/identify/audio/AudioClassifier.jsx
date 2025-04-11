@@ -1,36 +1,30 @@
-import { useState, useEffect } from "react";
-import { useModelContext } from "@/context/ModelContext";
+import { useState, useEffect, useCallback } from "react";
 import BirdPredictCard from "@/components/identify/BirdPredictCard";
 
 export default function AudioClassifier({ segments }) {
   const [predictedLabel, setPredictedLabel] = useState(null);
-  const { tf, audioModel } = useModelContext();
 
   const handlePredict = useCallback(async () => {
+    if (!segments || segments.length === 0) return;
     try {
-      const predictions = segments.map((segment) => {
-        return tf.tidy(() => {
-          let tensor = tf.tensor(segment);
-          tensor = tf.image.resizeBilinear(tensor.expandDims(-1), [16000, 13]);
-          tensor = tensor.expandDims(0);
-          const prediction = audioModel.predict(tensor);
-          return prediction.dataSync();
-        });
+      const res = await fetch("/api/predict/audio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mfccMatrix: segments }),
       });
 
-      const avgPrediction = predictions
-        .reduce(
-          (sum, p) => sum.map((v, i) => v + p[i]),
-          new Array(predictions[0].length).fill(0)
-        )
-        .map((v) => v / predictions.length);
+      if (!res.ok) {
+        const error = await res.text();
+        console.error("Error en el backend:", error);
+        return;
+      }
 
-      const predictedLabel = avgPrediction.indexOf(Math.max(...avgPrediction));
-      setPredictedLabel(predictedLabel);
+      const data = await res.json();
+      setPredictedLabel(data.predictedLabel);
     } catch (error) {
       console.error("Error en la predicción:", error);
     }
-  }, [segments, audioModel, tf]);
+  }, [segments]);
 
   useEffect(() => {
     handlePredict();

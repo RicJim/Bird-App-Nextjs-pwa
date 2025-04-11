@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 import Footer from "@/components/Footer";
 import { Roboto } from "next/font/google";
-import { ModelProvider } from "@/context/ModelContext";
 import NavbarWrapper from "@/components/Navbar/NavbarWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -25,12 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`roboto.className bg-green-100`}>
-        <ModelProvider>
-          <AuthProvider>
-            <NavbarWrapper />
-            <main>{children}</main>
-          </AuthProvider>
-        </ModelProvider>
+        <AuthProvider>
+          <NavbarWrapper />
+          <main>{children}</main>
+        </AuthProvider>
 
         <Footer />
       </body>
