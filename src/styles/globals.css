@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .navbar-links {
+        @apply flex items-center p-2 space-x-2 text-white hover:text-yellow-400 hover:bg-green-600 rounded-md transition-all duration-300;
+    }
+}

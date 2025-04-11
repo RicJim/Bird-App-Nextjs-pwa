@@ -1,15 +1,15 @@
-import * as tf from '@tensorflow/tfjs';
+import * as tf from "@tensorflow/tfjs";
 
-export const LoadGraphModel = async(modelPath) => {
-    try {
-        const model = await tf.loadGraphModel(modelPath);
+export const LoadGraphModel = async (modelPath) => {
+  try {
+    const model = await tf.loadGraphModel(modelPath);
 
-        return model;
-    } catch {
-        console.error(error);
-        return null
-    }
-}
+    return model;
+  } catch {
+    console.error(error);
+    return null;
+  }
+};
 
 /*export async function LoadTFHubModel(modelPath) {
     try {
