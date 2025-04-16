@@ -5,6 +5,9 @@ import { NextResponse } from "next/server";
 import * as tf from "@tensorflow/tfjs-node";
 import path from "path";
 
+import { savePrediction } from "@/lib/Mongodb/savePrediction";
+import { adminAuth } from "@/lib/firebase/serverApp";
+
 const modelPath = `file://${path.join(
   process.cwd(),
   "public/models/sound/model.json"
@@ -21,9 +24,20 @@ function loadAudioModelOnce(): Promise<tf.GraphModel> {
 
 loadAudioModelOnce();
 
+async function verifyToken(token: string) {
+  try {
+    const decodeToken = await adminAuth.verifyIdToken(token);
+    return decodeToken.uid;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const { mfccMatrix } = await req.json();
+    const { mfccMatrix, audioBase64 } = await req.json();
+    const token = req.headers.get("authorization")?.split("Bearer ")[1];
+
     if (!mfccMatrix || !Array.isArray(mfccMatrix)) {
       return NextResponse.json(
         { error: "No se proporcionó el MFCC correctamente" },
@@ -53,6 +67,19 @@ export async function POST(req: Request) {
       .map((v) => v / predictionArray.length);
 
     const predictedLabel = avgPrediction.indexOf(Math.max(...avgPrediction));
+
+    const userId = token ? await verifyToken(token) : null;
+
+    if (userId) {
+      const audioBuffer = Buffer.from(audioBase64, "base64");
+
+      savePrediction({
+        userId,
+        fileBuffer: audioBuffer,
+        predictedLabel,
+        type: "audio",
+      });
+    }
 
     return NextResponse.json({ predictedLabel });
   } catch (error) {

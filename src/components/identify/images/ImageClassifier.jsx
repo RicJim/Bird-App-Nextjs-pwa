@@ -1,8 +1,15 @@
 import { useState } from "react";
+// import { useModelContext } from "@/context/ModelContext";
 import BirdPredictCard from "@/components/identify/BirdPredictCard";
+
+import { auth } from "@/lib/firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ImageClassifier({ imageFile }) {
   const [predictedLabel, setPredictedLabel] = useState(null);
+  const [user] = useAuthState(auth);
+  // const imgRef = useRef(null);
+  // const { tf, imageModel } = useModelContext();
 
   const handlePredict = async () => {
     if (!imageFile) return;
@@ -12,10 +19,14 @@ export default function ImageClassifier({ imageFile }) {
         return;
       }
       const base64data = imageFile.split(",")[1];
+      const token = user ? await user.getIdToken() : null;
 
       const res = await fetch("/api/predict/image", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
         body: JSON.stringify({ imageBase64: base64data }),
       });
 
@@ -27,6 +38,25 @@ export default function ImageClassifier({ imageFile }) {
 
       const data = await res.json();
       setPredictedLabel(data.predictedLabel);
+
+      /*const img = imgRef.current || document.createElement("img");
+      img.src = imageFile;
+
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+      
+      const prediction = tf.tidy(() => {
+        let tensor = tf.browser.fromPixels(img);
+        tensor = tf.image.resizeBilinear(tensor, [224, 224]);
+        tensor = tensor.toFloat().expandDims(0);
+        const output = imageModel.predict(tensor);
+        return output.dataSync();
+      });
+
+      const predictedLabel = prediction.indexOf(Math.max(...prediction));
+      setPredictedLabel(predictedLabel);*/
     } catch (error) {
       console.error("Error en la predicción:", error);
     }

@@ -54,7 +54,7 @@ export default function Navbar({ isLoggedIn }) {
 
   const authInLinks = [
     {
-      href: "/",
+      href: "/records",
       label: "Registros",
       icons: [<DocumentIcon key="regis" className="w-5 h-5" />],
     },

@@ -6,8 +6,6 @@ import { redirect } from "next/navigation";
 import { createSession } from "@/lib/sessions";
 import bcrypt from "bcrypt";
 
-// test user: ric@gmail.com password: 1a#567
-
 export async function register(state, formData) {
   const validatedFields = RegisterFormSchema.safeParse({
     email: formData.get("email"),

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Footer from "@/components/Footer";
 import { Roboto } from "next/font/google";
+// import { ModelProvider } from "@/context/ModelContext";
 import NavbarWrapper from "@/components/Navbar/NavbarWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 

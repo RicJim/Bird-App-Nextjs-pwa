@@ -3,7 +3,9 @@ import dynamic from "next/dynamic";
 import AudioApiResponse from "./AudioApiResponse";
 import AudioFileUploader from "./AudioFileUploader";
 import AudioClassifier from "./AudioClassifier";
-const MicrophoneAudio = dynamic(() => import("./MicrophoneAudio"), { ssr: false, });
+const MicrophoneAudio = dynamic(() => import("./MicrophoneAudio"), {
+  ssr: false,
+});
 
 import { ArrowUpTrayIcon, MusicalNoteIcon } from "@heroicons/react/24/outline";
 
@@ -31,8 +33,9 @@ export default function AudioProcessor() {
       <div className="flex flex-col md:flex-row justify-center items-stretch space-y-5 md:space-y-0 md:space-x-8">
         {/* Carga del archivo */}
         <div
-          className={`flex flex-col items-center justify-between ${activeComponent === "uploader" ? "hidden" : "block"
-            }`}
+          className={`flex flex-col items-center justify-between ${
+            activeComponent === "uploader" ? "hidden" : "block"
+          }`}
         >
           <div className="flex flex-col justify-between w-full bg-yellow-100 border border-yellow-300 rounded-xl shadow-md px-6 py-6 text-center">
             <p className="text-yellow-800 text-base font-semibold mb-4">
@@ -60,8 +63,9 @@ export default function AudioProcessor() {
 
         {/* Botón de tomar fotografía */}
         <div
-          className={`flex flex-col items-center justify-between ${activeComponent === "mic" ? "hidden" : "block"
-            }`}
+          className={`flex flex-col items-center justify-between ${
+            activeComponent === "mic" ? "hidden" : "block"
+          }`}
         >
           <div className="flex flex-col justify-between w-full bg-green-100 border border-green-300 rounded-xl shadow-md px-6 py-6 text-center">
             <p className="text-green-800 text-base font-semibold mb-4">
@@ -86,14 +90,16 @@ export default function AudioProcessor() {
             </p>
           </div>
         </div>
-
       </div>
 
       {/** Render Condicional */}
       <div className="w-full mt-2 flex justify-center">
         {/* Cargar Audio */}
         {activeComponent === "uploader" && (
-          <AudioFileUploader onFileSelect={handleFileSelect} className="w-full" />
+          <AudioFileUploader
+            onFileSelect={handleFileSelect}
+            className="w-full"
+          />
         )}
         {/* Grabar Audio */}
         {activeComponent === "mic" && (
@@ -126,7 +132,7 @@ export default function AudioProcessor() {
           <h2 className="text-md sm:text-2xl font-semibold text-gray-700 mb-4">
             Resultado del procesamiento
           </h2>
-          <AudioClassifier segments={segments} />
+          <AudioClassifier segments={segments} audioFile={audiofile} />
         </div>
       )}
     </section>

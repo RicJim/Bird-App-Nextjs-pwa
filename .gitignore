@@ -41,6 +41,7 @@ venv
 
 /Vercel-Fastapi
 scripts/
+TestUser.txt
 
 # pwa
 
