@@ -5,8 +5,6 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebase/clientApp";
 
-// test user: ric@gmail.com password: 1a#567
-
 export async function register(state, formData) {
   const validatedFields = RegisterFormSchema.safeParse({
     email: formData.get("email"),

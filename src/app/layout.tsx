@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 import Footer from "@/components/Footer";
 import { Roboto } from "next/font/google";
-// import { ModelProvider } from "@/context/ModelContext";
 import NavbarWrapper from "@/components/Navbar/NavbarWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -12,7 +11,7 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: "BirdApp",
+  title: "YiBirdApp",
   description: "BirdApp Description",
   manifest: "/manifest.json",
 };
@@ -23,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`roboto.className bg-green-100`}>
+    <html lang="es">
+      <body className={`layout-nmf roboto.className bg-green-100`}>
         <AuthProvider>
           <NavbarWrapper />
           <main>{children}</main>

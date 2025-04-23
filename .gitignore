@@ -47,3 +47,6 @@ TestUser.txt
 
 public/sw.js
 public/workbox-*.js
+
+# Archivos de prueba
+backups

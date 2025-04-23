@@ -83,7 +83,7 @@ export default function CameraImage({ onFileSelect }) {
   };
 
   const handleSliderChange = (e) => {
-    const newScale = Math.min(Math.max(e.target.value, 1), 4); // Limitar entre 1 y 4
+    const newScale = Math.min(Math.max(e.target.value, 1), 4);
     setScale(newScale);
   };
 
