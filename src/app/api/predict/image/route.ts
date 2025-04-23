@@ -2,21 +2,22 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import * as tf from "@tensorflow/tfjs";
-import { createCanvas, loadImage } from "canvas";
+import * as tf from "@tensorflow/tfjs-node";
+import path from "path";
 
 import { savePrediction } from "@/lib/Mongodb/savePrediction";
 import { adminAuth } from "@/lib/firebase/serverApp";
 
-const modelPath = `${process.env.NEXT_PUBLIC_BASE_URL}/models/image/model.json`;
+const modelPath = `file://${path.join(
+  process.cwd(),
+  "public/models/image/model.json"
+)}`;
 
 let imageModelPromise: Promise<tf.LayersModel> | null = null;
 
 function loadImageModelOnce() {
-  console.log("funcion LoadImageModel");
   if (!imageModelPromise) {
     imageModelPromise = tf.loadLayersModel(modelPath);
-    console.log("Modelo Cargado...");
   }
   return imageModelPromise;
 }
@@ -52,27 +53,8 @@ export async function POST(req: Request) {
 
     const imageBuffer = Buffer.from(imageBase64, "base64");
 
-    const image = await loadImage(imageBuffer);
-    const canvas = createCanvas(image.width, image.height);
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(image, 0, 0);
-
-    const { data, width, height } = ctx.getImageData(
-      0,
-      0,
-      image.width,
-      image.height
-    );
-
-    const rgbData = [];
-    for (let i = 0; i < data.length; i += 4) {
-      rgbData.push(data[i]);
-      rgbData.push(data[i + 1]);
-      rgbData.push(data[i + 2]);
-    }
-
-    const imageTensor = tf
-      .tensor3d(rgbData, [height, width, 3])
+    const imageTensor = tf.node
+      .decodeImage(imageBuffer, 3)
       .resizeBilinear([224, 224])
       .toFloat()
       .div(255.0);
@@ -87,6 +69,11 @@ export async function POST(req: Request) {
     const predictedLabel = Array.from(prediction).indexOf(
       Math.max(...prediction)
     );
+
+    // prediction.forEach((p, i) => {
+    //   console.log(`Clase ${i}: ${(p * 100).toFixed(2)}%`);
+    // });
+    // console.log("Label: ", predictedLabel);
 
     const userId = token ? await verifyToken(token) : null;
 

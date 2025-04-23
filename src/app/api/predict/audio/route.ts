@@ -2,12 +2,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import * as tf from "@tensorflow/tfjs";
+import * as tf from "@tensorflow/tfjs-node";
+import path from "path";
 
 import { savePrediction } from "@/lib/Mongodb/savePrediction";
 import { adminAuth } from "@/lib/firebase/serverApp";
 
-const modelPath = `${process.env.NEXT_PUBLIC_BASE_URL}/models/sound/model.json`;
+const modelPath = `file://${path.join(
+  process.cwd(),
+  "public/models/sound/model.json"
+)}`;
 
 let audioModelPromise: Promise<tf.GraphModel> | null = null;
 

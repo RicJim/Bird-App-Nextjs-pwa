@@ -11,8 +11,6 @@ export default function AudioClassifier({ segments, audioFile }) {
   const handlePredict = useCallback(async () => {
     if (!segments || segments.length === 0) return;
 
-    console.log(audioFile);
-
     try {
       const audioBase64 = await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -45,7 +43,7 @@ export default function AudioClassifier({ segments, audioFile }) {
     } catch (error) {
       console.error("Error en la predicción:", error);
     }
-  }, [segments]);
+  }, [segments, audioFile, user]);
 
   useEffect(() => {
     handlePredict();

@@ -60,10 +60,12 @@ export default function PredictionsLog() {
                 <div className="flex flex-col items-center">
                   {/* Imagen real si es tipo imagen */}
                   {rec.type === "image" ? (
-                    <img
+                    <Image
                       src={`/api/file/${rec.fileId}`}
                       alt="Imagen utilizada"
-                      className="w-52 h-52 object-cover rounded-full shadow-md border-4 border-green-200 mb-4"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="rounded-full shadow-md object-cover border-4 border-green-200"
                     />
                   ) : (
                     // Poster del ave si es audio
