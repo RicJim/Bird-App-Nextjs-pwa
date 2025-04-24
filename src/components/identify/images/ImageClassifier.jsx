@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import BirdPredictCard from "@/components/identify/BirdPredictCard";
 
 import { auth } from "@/lib/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+import { predictImage } from "@/services/tfjs/image/predictImage";
+
 export default function ImageClassifier({ imageFile }) {
   const [predictedLabel, setPredictedLabel] = useState(null);
   const [user] = useAuthState(auth);
+  const imgRef = useRef(null);
 
   const handlePredict = async () => {
     if (!imageFile) return;
@@ -15,26 +18,43 @@ export default function ImageClassifier({ imageFile }) {
         console.error("La imagen no está en formato base64 válido.");
         return;
       }
-      const base64data = imageFile.split(",")[1];
-      const token = user ? await user.getIdToken() : null;
 
-      const res = await fetch("/api/predict/image", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: JSON.stringify({ imageBase64: base64data }),
+      const img = imgRef.current || document.createElement("img");
+      img.src = imageFile;
+
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
       });
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Error en el backend:", errorText);
-        return;
-      }
+      const pred = await predictImage(img);
+      setPredictedLabel(pred);
 
-      const data = await res.json();
-      setPredictedLabel(data.predictedLabel);
+      const token = user ? await user.getIdToken() : null;
+
+      if (token) {
+        const base64data = imageFile.split(",")[1];
+
+        const res = await fetch("/api/predict/image", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify({
+            imageBase64: base64data,
+            predictedLabel,
+          }),
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("Error en el backend:", errorText);
+          return;
+        }
+
+        const data = await res.json();
+      }
     } catch (error) {
       console.error("Error en la predicción:", error);
     }
