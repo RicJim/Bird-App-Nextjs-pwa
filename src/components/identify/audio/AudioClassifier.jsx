@@ -9,7 +9,6 @@ import { predictAudio } from "@/services/tfjs/audio/predictAudio";
 export default function AudioClassifier({ segments, audioFile }) {
   const [predictedLabel, setPredictedLabel] = useState(null);
   const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
 
   const handlePredict = useCallback(async () => {
     if (!segments || segments.length === 0) return;
@@ -38,9 +37,8 @@ export default function AudioClassifier({ segments, audioFile }) {
             ...(token && { Authorization: `Bearer ${token}` }),
           },
           body: JSON.stringify({
-            mfccMatrix: segments,
-            audioBase64,
-            predictedLabel,
+            audioBase64: audioBase64,
+            predictedLabel: pred,
           }),
         });
 
@@ -55,7 +53,7 @@ export default function AudioClassifier({ segments, audioFile }) {
     } catch (error) {
       console.error("Error en la predicción:", error);
     }
-  }, [segments, audioFile, user, predictedLabel]);
+  }, [segments, audioFile, user]);
 
   useEffect(() => {
     handlePredict();

@@ -17,12 +17,12 @@ async function verifyToken(token: string) {
 
 export async function POST(req: Request) {
   try {
-    const { mfccMatrix, audioBase64, predictedLabel } = await req.json();
+    const { audioBase64, predictedLabel } = await req.json();
     const token = req.headers.get("authorization")?.split("Bearer ")[1];
 
-    if (!mfccMatrix || !Array.isArray(mfccMatrix)) {
+    if (!audioBase64) {
       return NextResponse.json(
-        { error: "No se proporcionó el MFCC correctamente" },
+        { error: "No se proporcionó el audio" },
         { status: 400 }
       );
     }

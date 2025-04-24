@@ -43,7 +43,7 @@ export default function ImageClassifier({ imageFile }) {
           },
           body: JSON.stringify({
             imageBase64: base64data,
-            predictedLabel,
+            predictedLabel: pred,
           }),
         });
 
