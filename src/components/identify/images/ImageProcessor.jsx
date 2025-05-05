@@ -87,11 +87,14 @@ export default function ImageProcessor() {
       {/* Mostrar imagen */}
       {imageFile && (
         <div className="flex justify-center mt-8">
-          <div
-            className="relative w-[45vh] h-[45vh] sm:w-[60vh] sm:h-[40vh] md:w-[80vh] md:h-[60vh] 
-            overflow-hidden border-2 border-gray-300 rounded-lg shadow-lg"
-          >
-            <Image src={imageFile} alt="Imagen" fill className="object-cover" />
+          <div className="relative overflow-hidden border-2 border-gray-300 rounded-lg shadow-lg">
+            <Image
+              src={imageFile}
+              alt="Imagen"
+              width={400}
+              height={300}
+              className="object-cover"
+            />
           </div>
         </div>
       )}

@@ -27,7 +27,7 @@ export default function ImageDetail({ image }) {
           height={300}
           className="rounded-lg mb-6 sm:mb-0 mx-auto sm:mx-0 shadow-xl object-cover"
         />
-        <div className="text-green-700 space-y-4">
+        <div className="text-green-700 space-y-4 mx-4">
           <p className="text-sm sm:text-base">
             <strong>Descripción: </strong>
             {image.Descripcion1}
