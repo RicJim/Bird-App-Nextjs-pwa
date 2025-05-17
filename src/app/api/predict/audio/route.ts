@@ -10,7 +10,10 @@ async function verifyToken(token: string) {
   try {
     const decodeToken = await adminAuth.verifyIdToken(token);
     return decodeToken.uid;
-  } catch (e) {
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
     return null;
   }
 }

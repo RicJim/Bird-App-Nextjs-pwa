@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { getDB } from "@/lib/Mongodb/mongodb";
-import { GridFSBucket, ObjectId } from "mongodb";
+import { GridFSBucket, GridFSBucketReadStream, ObjectId } from "mongodb";
+import { Readable } from "stream";
 
 export async function GET(
   req: NextRequest,
@@ -36,9 +37,12 @@ export async function GET(
       file.filename?.startsWith("audio") || file.metadata?.type === "audio";
     const bucketToUse = isAudio ? audioBucket : imageBucket;
 
-    const downloadStream = bucketToUse.openDownloadStream(fileId);
+    const downloadStream: GridFSBucketReadStream =
+      bucketToUse.openDownloadStream(fileId);
 
-    return new Response(downloadStream as any, {
+    const webStream = nodeToWebStream(downloadStream);
+
+    return new Response(webStream, {
       headers: {
         "Content-Type": file.contentType || "application/octet-stream",
         "Content-Disposition": `inline; filename="${file.filename}"`,
@@ -48,4 +52,17 @@ export async function GET(
     console.error("Error al servir archivo:", err);
     return new Response("Error interno", { status: 500 });
   }
+}
+
+function nodeToWebStream(nodeStream: Readable): ReadableStream {
+  return new ReadableStream({
+    start(controller) {
+      nodeStream.on("data", (chunk) => controller.enqueue(chunk));
+      nodeStream.on("end", () => controller.close());
+      nodeStream.on("error", (err) => controller.error(err));
+    },
+    cancel() {
+      nodeStream.destroy();
+    },
+  });
 }

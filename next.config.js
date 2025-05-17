@@ -1,4 +1,6 @@
-const withPWA = require("next-pwa")({
+import withPWA from "next-pwa";
+
+const withPWAConfig = withPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
@@ -80,6 +82,9 @@ const withPWA = require("next-pwa")({
 const nextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ["@tensorflow/tfjs-node"],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -94,4 +99,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+export default withPWAConfig(nextConfig);

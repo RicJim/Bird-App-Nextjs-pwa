@@ -31,14 +31,14 @@ export default function ApiResponse({ audiofile, setSegments }) {
 
   return (
     <div className="w-full max-w-xl mx-auto p-1 sm:p-5">
-        <button
-          onClick={handleUpload}
-          className="w-full bg-gradient-to-r from-teal-500 to-teal-600 
+      <button
+        onClick={handleUpload}
+        className="w-full bg-gradient-to-r from-teal-500 to-teal-600 
           text-white text-sm sm:text-base p-2 sm:p-3 rounded-lg shadow-md
             hover:scale-105 transform transition-all duration-300"
-        >
-          Procesar y Clasificar...
-        </button>
+      >
+        Procesar y Clasificar...
+      </button>
     </div>
   );
 }

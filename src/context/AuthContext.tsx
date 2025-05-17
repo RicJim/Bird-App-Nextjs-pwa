@@ -41,8 +41,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await signOut(auth);
       setUser(null);
-    } catch (e: any) {
-      console.log(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error(e.message);
+      }
     }
   };
 

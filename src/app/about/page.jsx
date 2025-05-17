@@ -16,7 +16,10 @@ export default function AboutPage() {
           {/*<p className="bg-yellow-400 text-green-900 px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition-all">
             Características
           </p>*/}
-          <Link href="mailto:ricardo.jimenez3@utp.ac.pa?subject=Consultas de la Herramienta" className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-all">
+          <Link
+            href="mailto:ricardo.jimenez3@utp.ac.pa?subject=Consultas de la Herramienta"
+            className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-all"
+          >
             Contacto
           </Link>
         </div>

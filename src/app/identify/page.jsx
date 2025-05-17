@@ -14,8 +14,8 @@ export default function IdentifyPage() {
           ¡Explora la Naturaleza!
         </h1>
         <p className="text-sm sm:text-base md:text-lg text-blue-600 text-center mb-6">
-            Sube un archivo, toma una fotografía o graba un audio para descubrir 
-            más sobre la fauna que nos rodea.
+          Sube un archivo, toma una fotografía o graba un audio para descubrir
+          más sobre la fauna que nos rodea.
         </p>
         <div className="flex flex-wrap justify-center items-center mb-8 gap-10">
           <Link href="/identify/image-processor">

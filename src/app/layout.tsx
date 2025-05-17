@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`layout-nmf roboto.className bg-green-100`}>
+      <body className={`layout-nmf ${roboto.className} bg-green-100`}>
         <AuthProvider>
           <NavbarWrapper />
           <main>{children}</main>

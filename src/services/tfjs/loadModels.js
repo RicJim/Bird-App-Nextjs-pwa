@@ -20,6 +20,7 @@ export async function LoadModels(key, url, ver, removedOld = false) {
         model = await tf.loadLayersModel(indexedDbUrl);
     }
   } catch (e) {
+    console.error(e.message);
     switch (key) {
       case "audio-model":
         model = await tf.loadGraphModel(url);
