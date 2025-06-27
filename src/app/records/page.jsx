@@ -1,5 +1,3 @@
-"use client";
-
 import PredictionsLog from "@/components/records/PredictionsLog";
 
 export default function RegistrosPage() {

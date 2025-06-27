@@ -31,7 +31,7 @@ export default function Home() {
             className="bg-white p-6 rounded-lg shadow-lg border-2 border-green-300
               hover:shadow-lg hover:scale-105 transition-all"
           >
-            <Link href="/identify/image-processor">
+            <Link href={{ pathname: "/identify", query: { tab: "tab1" } }}>
               <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-2">
                 ¡Identificación por Images!
               </h3>
@@ -46,7 +46,7 @@ export default function Home() {
             className="bg-white p-6 rounded-lg shadow-lg border-2 border-green-300
               hover:shadow-lg hover:scale-105 transition-all"
           >
-            <Link href="/identify/audio-processor">
+            <Link href={{ pathname: "/identify", query: { tab: "tab2" } }}>
               <h3 className="text-xl sm:text-2xl font-bold text-green-700 mb-2">
                 ¡Identificación por Sonido!
               </h3>

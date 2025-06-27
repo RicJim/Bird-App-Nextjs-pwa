@@ -16,3 +16,12 @@ export function preprocessAudio(segments) {
 
   return input;
 }
+
+
+// export function preprocessAudio(segments) {
+//   return tf.tidy(() => {
+//     return tf.stack(
+//       segments.map((segment) => tf.tensor1d(segment))  // [1024]
+//     ); // [num_segments, 1024]
+//   });
+// }

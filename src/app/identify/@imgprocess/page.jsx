@@ -1,8 +1,15 @@
+"use client";
+
 import { useState } from "react";
-import ImageFileUploader from "./ImageFileUploader";
-import CameraImage from "./CameraImage";
-import ImageClassifier from "./ImageClassifier";
+import ImageFileUploader from "@/components/identify/images/ImageFileUploader";
+import CameraImage from "@/components/identify/images/CameraImage";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+
+const ImageClassifier = dynamic(
+  () => import("@/components/identify/images/ImageClassifier"),
+  { ssr: false }
+);
 
 import { ArrowUpTrayIcon, CameraIcon } from "@heroicons/react/24/outline";
 
@@ -15,10 +22,7 @@ export default function ImageProcessor() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center md:px-12 lg:px-16 py-2">
-      <h1 className="text-2xl sm:text-3xl font-bold text-yellow-600 mb-4 text-center">
-        ¡Explora la Naturaleza!
-      </h1>
+    <div className="min-h-screen flex flex-col items-center md:px-12 lg:px-16 py-2">
       <p className="text-sm sm:text-base md:text-lg text-blue-600 text-center mb-6">
         Sube una imagen o toma una fotografía para conocer más sobre la fauna
         que nos rodea.
