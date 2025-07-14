@@ -1,20 +1,12 @@
 import * as tf from "@tensorflow/tfjs";
 
-let globalMean = null;
-let globalStd = null;
-
-export async function loadNormalizationStats() {
-  const stats = await fetch('/normalization.json').then(res => res.json());
-  globalMean = stats.global_mean;
-  globalStd = stats.global_std;
-}
+let globalMean = -4.214846134185791;
+let globalStd = 39.93134689331055;
 
 export function preprocessAudio(segments) {
   if (globalMean == null || globalStd == null) {
     throw new Error("Stats de normalización no cargados.");
   }
-  console.log("Global Mean: ", globalMean)
-  console.log("Global Std: ", globalStd)
 
   let input = tf.tidy(() => {
     return tf.stack(

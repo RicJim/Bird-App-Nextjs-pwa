@@ -1,11 +1,9 @@
 import { LoadAudioModel } from "./audioModel";
-import { preprocessAudio, loadNormalizationStats } from "./preprocessAudio";
+import { preprocessAudio } from "./preprocessAudio";
 import * as tf from "@tensorflow/tfjs";
 
 export async function predictAudio(segments) {
   const model = await LoadAudioModel();
-
-  await loadNormalizationStats();
 
   const output = tf.tidy(() => {
     const input = preprocessAudio(segments);
