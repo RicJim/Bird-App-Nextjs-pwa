@@ -13,11 +13,14 @@ export function preprocessAudio(segments) {
   if (globalMean == null || globalStd == null) {
     throw new Error("Stats de normalización no cargados.");
   }
+  console.log("Global Mean: ", globalMean)
+  console.log("Global Std: ", globalStd)
+
   let input = tf.tidy(() => {
     return tf.stack(
       segments.map((segment) => {
         let mfccTensor = tf
-          .tensor2d(segment)
+          .tensor(segment, undefined, 'float32')
           .sub(globalMean).div(globalStd)
           .expandDims(-1)
           .resizeBilinear([224, 224])
