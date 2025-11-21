@@ -3,9 +3,18 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase/clientApp";
+import { auth, isFirebaseConfigured } from "@/lib/firebase/clientApp";
 
 export async function register(state, formData) {
+  if (!isFirebaseConfigured) {
+    return {
+      errors: {
+        email:
+          "El servicio de autenticación no está disponible en este momento.",
+      },
+    };
+  }
+
   const validatedFields = RegisterFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -39,6 +48,15 @@ export async function register(state, formData) {
 }
 
 export async function login(state, formData) {
+  if (!isFirebaseConfigured) {
+    return {
+      errors: {
+        email:
+          "El servicio de autenticación no está disponible en este momento.",
+      },
+    };
+  }
+
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),

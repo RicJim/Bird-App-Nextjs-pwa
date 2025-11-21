@@ -5,6 +5,11 @@ const withPWAConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
+  buildExcludes: [/middleware-manifest\.json$/],
+  publicExcludes: ["!noprecache/**/*"],
+  cacheStartUrl: true,
+  cacheOnFrontEndNav: true,
+  reloadOnOnline: true,
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/cdn\.pixabay\.com\/.*\.(png|jpg|jpeg|svg|webp)$/,
@@ -36,7 +41,7 @@ const withPWAConfig = withPWA({
       options: {
         cacheName: "next-static",
         expiration: {
-          maxEntries: 100,
+          maxEntries: 200,
           maxAgeSeconds: 60 * 60 * 24 * 30,
         },
       },
@@ -47,7 +52,7 @@ const withPWAConfig = withPWA({
       options: {
         cacheName: "image-model-cache",
         expiration: {
-          maxEntries: 1,
+          maxEntries: 5,
           maxAgeSeconds: 60 * 60 * 24 * 30,
         },
       },
@@ -58,21 +63,43 @@ const withPWAConfig = withPWA({
       options: {
         cacheName: "sound-model-cache",
         expiration: {
-          maxEntries: 1,
+          maxEntries: 5,
           maxAgeSeconds: 60 * 60 * 24 * 30,
         },
       },
     },
     {
-      urlPattern: /^\/.*/, // Coincide con todas las rutas dinámicas
-      handler: "NetworkFirst", // Intenta la red primero; si falla, usa la caché
+      urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "google-fonts",
+        expiration: {
+          maxEntries: 20,
+          maxAgeSeconds: 60 * 60 * 24 * 365,
+        },
+      },
+    },
+    {
+      urlPattern: /^\/.*\.(jpg|jpeg|png|gif|webp|svg|ico)$/,
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "image-cache",
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24 * 30,
+        },
+      },
+    },
+    {
+      urlPattern: /^\/(?!api|_next\/static|public).*$/,
+      handler: "NetworkFirst",
       options: {
         cacheName: "dynamic-pages",
+        networkTimeoutSeconds: 8,
         expiration: {
-          maxEntries: 50,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 días
+          maxEntries: 100,
+          maxAgeSeconds: 60 * 60 * 24 * 7,
         },
-        networkTimeoutSeconds: 10, // Espera 10 segundos antes de usar la caché
       },
     },
   ],
@@ -96,6 +123,41 @@ const nextConfig = {
         hostname: "static.inaturalist.org",
       },
     ],
+  },
+  headers: async () => {
+    return [
+      {
+        source: "/public/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.woff2",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Permissions-Policy",
+            value: "camera=*, microphone=*, geolocation=*",
+          },
+          {
+            key: "Feature-Policy",
+            value: "camera 'self'; microphone 'self'; geolocation 'self'",
+          },
+        ],
+      },
+    ];
   },
 };
 

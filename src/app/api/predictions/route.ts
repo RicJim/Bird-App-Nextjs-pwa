@@ -6,8 +6,12 @@ export async function GET() {
     const collection = await getCollection("predictions");
     if (!collection) {
       return NextResponse.json(
-        { error: "No se pudo acceder a la colección" },
-        { status: 500 }
+        {
+          error:
+            "No se pudo acceder a la colección. MongoDB no está disponible.",
+          predictions: [],
+        },
+        { status: 503 }
       );
     }
 
@@ -21,8 +25,8 @@ export async function GET() {
   } catch (error) {
     console.error("Error al obtener predicciones:", error);
     return NextResponse.json(
-      { error: "Error al obtener predicciones" },
-      { status: 500 }
+      { error: "Error al obtener predicciones", predictions: [] },
+      { status: 503 }
     );
   }
 }

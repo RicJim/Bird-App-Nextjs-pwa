@@ -40,30 +40,30 @@ export default function IdentifyPage({
   };
   return (
     <>
-      <section className="flex gap-4 justify-center items-center">
+      <section className="w-full flex flex-wrap gap-2 sm:gap-4 justify-center items-center px-2 sm:px-4">
         <button
           onClick={() => setActiveTab("tab1")}
-          className={`py-3 px-10 border-b-2 text-md font-medium transition-colors duration-300 ${
+          className={`py-2 sm:py-3 px-3 sm:px-6 md:px-10 border-b-2 text-xs sm:text-sm md:text-base font-medium transition-colors duration-300 whitespace-nowrap ${
             activeTab === "tab1"
               ? "border-green-600 text-green-600"
               : "border-transparent text-gray-500 hover:text-green-600 hover:border-green-300"
           }`}
         >
-          Clasificación por Imágenes
+          <span className="hidden sm:inline">Clasificación por </span>Imágenes
         </button>
 
         <button
           onClick={() => setActiveTab("tab2")}
-          className={`py-3 px-10 border-b-2 text-md font-medium transition-colors duration-300 ${
+          className={`py-2 sm:py-3 px-3 sm:px-6 md:px-10 border-b-2 text-xs sm:text-sm md:text-base font-medium transition-colors duration-300 whitespace-nowrap ${
             activeTab === "tab2"
               ? "border-green-600 text-green-600"
               : "border-transparent text-gray-500 hover:text-green-600 hover:border-green-300"
           }`}
         >
-          Clasificación por Sonido
+          <span className="hidden sm:inline">Clasificación por </span>Sonido
         </button>
       </section>
-      <div>{renderTabContent()}</div>
+      <div className="w-full">{renderTabContent()}</div>
     </>
   );
 }

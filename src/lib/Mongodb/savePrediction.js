@@ -1,4 +1,4 @@
-import { getDB, getCollection } from "./mongodb";
+import { getDB, getCollection, isMongoDBConfigured } from "./mongodb";
 import { GridFSBucket } from "mongodb";
 import { Readable } from "stream";
 
@@ -8,43 +8,61 @@ export async function savePrediction({
   predictedLabel,
   type,
 }) {
-  const db = await getDB();
-  const collection = await getCollection("predictions");
-
-  if (!collection) {
-    throw new Error("No se pudo conectar a la colección");
+  if (!isMongoDBConfigured) {
+    console.warn("MongoDB no está disponible. La predicción no será guardada.");
+    return;
   }
 
-  const bucketName = type === "audio" ? "audios" : "images";
-  const bucket = new GridFSBucket(db, { bucketName });
+  try {
+    const db = await getDB();
+    if (!db) {
+      console.warn(
+        "No se pudo conectar a MongoDB. La predicción no será guardada."
+      );
+      return;
+    }
 
-  const filename = `${type}_${userId}_${Date.now()}`;
+    const collection = await getCollection("predictions");
+    if (!collection) {
+      console.warn(
+        "No se pudo acceder a la colección. La predicción no será guardada."
+      );
+      return;
+    }
 
-  return new Promise((resolve, reject) => {
-    const readableStream = Readable.from(fileBuffer);
-    const uploadStream = bucket.openUploadStream(filename);
+    const bucketName = type === "audio" ? "audios" : "images";
+    const bucket = new GridFSBucket(db, { bucketName });
 
-    uploadStream.once("finish", async () => {
-      try {
-        await collection.insertOne({
-          userId,
-          fileId: uploadStream.id,
-          type,
-          predictedLabel,
-          createdAt: new Date(),
-        });
+    const filename = `${type}_${userId}_${Date.now()}`;
+
+    return new Promise((resolve, reject) => {
+      const readableStream = Readable.from(fileBuffer);
+      const uploadStream = bucket.openUploadStream(filename);
+
+      uploadStream.once("finish", async () => {
+        try {
+          await collection.insertOne({
+            userId,
+            fileId: uploadStream.id,
+            type,
+            predictedLabel,
+            createdAt: new Date(),
+          });
+          resolve();
+        } catch (e) {
+          console.error("Error al guardar metadatos:", e);
+          resolve();
+        }
+      });
+
+      uploadStream.once("error", (err) => {
+        console.error("Error subiendo archivo:", err);
         resolve();
-      } catch (e) {
-        console.error("Error al guardar metadatos:", e);
-        reject(e);
-      }
-    });
+      });
 
-    uploadStream.once("error", (err) => {
-      console.error("Error subiendo archivo:", err);
-      reject(err);
+      readableStream.pipe(uploadStream);
     });
-
-    readableStream.pipe(uploadStream);
-  });
+  } catch (error) {
+    console.error("Error en savePrediction:", error);
+  }
 }

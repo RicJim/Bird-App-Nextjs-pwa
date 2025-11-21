@@ -3,10 +3,16 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 
-import { savePrediction } from "@/lib/Mongodb/savePrediction";
-import { adminAuth } from "@/lib/firebase/serverApp";
+import { predictionQueue } from "@/lib/Mongodb/predictionQueue";
+import { adminAuth, isFirebaseAdminConfigured } from "@/lib/firebase/serverApp";
 
 async function verifyToken(token: string) {
+  // Si Firebase Admin no está configurado, retornar null
+  if (!isFirebaseAdminConfigured || !adminAuth) {
+    console.warn("Firebase Admin no está disponible");
+    return null;
+  }
+
   try {
     const decodeToken = await adminAuth.verifyIdToken(token);
     return decodeToken.uid;
@@ -30,24 +36,35 @@ export async function POST(req: Request) {
       );
     }
 
+    const audioBuffer = Buffer.from(audioBase64, "base64");
+
     const userId = token ? await verifyToken(token) : null;
 
+    // Encolamos la predicción sin esperar
     if (userId) {
-      const audioBuffer = Buffer.from(audioBase64, "base64");
-
-      savePrediction({
+      const taskId = await predictionQueue.enqueue({
         userId,
         fileBuffer: audioBuffer,
         predictedLabel,
         type: "audio",
       });
+
+      return NextResponse.json({
+        message: "Predicción encolada para guardado",
+        taskId,
+        status: "queued",
+      });
     }
 
-    return NextResponse.json({ message: "Operancion Completada..." });
+    // Si no hay usuario, retornar éxito igual (sin guardar)
+    return NextResponse.json({
+      message: "Predicción procesada",
+      status: "success",
+    });
   } catch (error) {
     console.error("Error en la predicción de audio:", error);
     return NextResponse.json(
-      { error: "Error interno en la predicción" },
+      { error: "Error procesando la predicción" },
       { status: 500 }
     );
   }

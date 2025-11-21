@@ -45,11 +45,6 @@ export default function Navbar({ isLoggedIn }) {
       label: "Login",
       icons: [<UserCircleIcon key="log" className="w-5 h-5" />],
     },
-    {
-      href: "/register",
-      label: "Registro",
-      icons: [<UserPlusIcon key="reg" className="w-5 h-5" />],
-    },
   ];
 
   const authInLinks = [

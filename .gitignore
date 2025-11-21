@@ -48,6 +48,8 @@ TestUser.txt
 # pwa
 public/sw.js
 public/workbox-*.js
+public/fallback-*.js
 
 # Archivos de prueba
 backups
+examples

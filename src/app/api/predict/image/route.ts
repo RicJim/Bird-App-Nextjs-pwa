@@ -3,10 +3,15 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 
-import { savePrediction } from "@/lib/Mongodb/savePrediction";
-import { adminAuth } from "@/lib/firebase/serverApp";
+import { predictionQueue } from "@/lib/Mongodb/predictionQueue";
+import { adminAuth, isFirebaseAdminConfigured } from "@/lib/firebase/serverApp";
 
 async function verifyToken(token: string) {
+  if (!isFirebaseAdminConfigured || !adminAuth) {
+    console.warn("Firebase Admin no está disponible");
+    return null;
+  }
+
   try {
     const decodeToken = await adminAuth.verifyIdToken(token);
     return decodeToken.uid;
@@ -34,20 +39,30 @@ export async function POST(req: Request) {
 
     const userId = token ? await verifyToken(token) : null;
 
+    // lista de espera
     if (userId) {
-      savePrediction({
+      const taskId = await predictionQueue.enqueue({
         userId,
         fileBuffer: imageBuffer,
         predictedLabel,
         type: "image",
-      }).catch(console.error);
+      });
+
+      return NextResponse.json({
+        message: "Predicción encolada para guardado",
+        taskId,
+        status: "queued",
+      });
     }
 
-    return NextResponse.json({ message: "Operancion Completada..." });
+    return NextResponse.json({
+      message: "Predicción procesada",
+      status: "success",
+    });
   } catch (e) {
     console.error("Error en la predicción de imagen:", e);
     return NextResponse.json(
-      { error: "Error interno en la predicción" },
+      { error: "Error procesando la predicción" },
       { status: 500 }
     );
   }

@@ -13,9 +13,16 @@ export async function GET(
     const db = await getDB();
 
     if (!db) {
-      return new Response("Error al conectar con la base de datos", {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({
+          error:
+            "Error al conectar con la base de datos. MongoDB no está disponible.",
+        }),
+        {
+          status: 503,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     const imageBucket = new GridFSBucket(db, { bucketName: "images" });
@@ -30,7 +37,10 @@ export async function GET(
       (await audioFiles.findOne({ _id: fileId }));
 
     if (!file) {
-      return new Response("Archivo no encontrado", { status: 404 });
+      return new Response(JSON.stringify({ error: "Archivo no encontrado" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const isAudio =
@@ -50,7 +60,13 @@ export async function GET(
     });
   } catch (err) {
     console.error("Error al servir archivo:", err);
-    return new Response("Error interno", { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Error interno al servir el archivo" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }
 

@@ -26,6 +26,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!auth) {
+      console.warn(
+        "Auth no inicializado. La autenticación no estará disponible."
+      );
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
@@ -39,8 +46,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await signOut(auth);
-      setUser(null);
+      if (auth) {
+        await signOut(auth);
+        setUser(null);
+      }
     } catch (e: unknown) {
       if (e instanceof Error) {
         console.error(e.message);

@@ -1,27 +1,46 @@
 import "server-only";
 import admin from "firebase-admin";
+import { Auth } from "firebase-admin/auth";
 
-if (!admin.apps.length) {
-  const base64: string | undefined = process.env.FIREBASE_ADMIN_SDK;
+let adminApp = null;
+let isFirebaseAdminConfigured = false;
+let adminAuth: Auth | null = isFirebaseAdminConfigured ? admin.auth() : null;
 
-  let serviceAccount;
-  try {
-    if (!base64) throw new Error("");
-    serviceAccount = JSON.parse(
-      Buffer.from(base64, "base64").toString("utf-8")
-    );
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error("Error al parsear JSON:", err.message);
+try {
+  if (!admin.apps.length) {
+    const base64: string | undefined = process.env.FIREBASE_ADMIN_SDK;
+
+    if (!base64) {
+      console.warn(
+        "FIREBASE_ADMIN_SDK no está configurado. Firebase Admin no estará disponible."
+      );
+      adminApp = null;
+      adminAuth = null;
+    } else {
+      try {
+        const serviceAccount = JSON.parse(
+          Buffer.from(base64, "base64").toString("utf-8")
+        );
+        adminApp = admin.initializeApp({
+          credential: admin.credential.cert(serviceAccount),
+        });
+        adminAuth = admin.auth();
+        isFirebaseAdminConfigured = true;
+      } catch (parseErr: unknown) {
+        console.error("Error al parsear Firebase Admin SDK:", parseErr);
+        adminApp = null;
+        adminAuth = null;
+      }
     }
-    throw err;
+  } else {
+    adminApp = admin.app();
+    adminAuth = admin.auth();
+    isFirebaseAdminConfigured = true;
   }
-
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+} catch (err: unknown) {
+  console.error("Error inicializando Firebase Admin:", err);
+  adminApp = null;
+  adminAuth = null;
 }
 
-const adminAuth = admin.auth();
-
-export { admin, adminAuth };
+export { adminApp as admin, adminAuth, isFirebaseAdminConfigured };
