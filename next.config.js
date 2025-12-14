@@ -109,9 +109,6 @@ const withPWAConfig = withPWA({
 const nextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ["@tensorflow/tfjs-node"],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
